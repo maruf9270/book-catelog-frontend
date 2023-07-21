@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSignUpMutation } from "../../redux/user/userApi";
 import { useEffect } from "react";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
+import { toast } from "react-toastify";
+
 interface SignUpError {
   data: {
     message: string;
@@ -9,7 +11,8 @@ interface SignUpError {
   };
 }
 const SignUp = () => {
-  const [signUp, { isError, isLoading, error, data, isSuccess }] =
+  const navigate = useNavigate();
+  const [signUp, { isError, isLoading, error, isSuccess }] =
     useSignUpMutation();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,12 +33,14 @@ const SignUp = () => {
 
   useEffect(() => {
     if (isError) {
-      alert(signUpError?.data?.message);
+      toast.error(signUpError?.data?.message);
     }
     if (isSuccess) {
-      alert("signed up successfylly");
+      toast.success("Signed Up successfully. Please Log in");
+      navigate("/login");
     }
-  }, [isError, isLoading, isSuccess, signUpError?.data?.message]);
+  }, [isError, isLoading, isSuccess, navigate, signUpError?.data?.message]);
+
   return (
     <div className="flex items-center justify-center min-h-[80vh] rounded-md">
       <div className=" h-auto flex flex-col items-center justify-center w-96 shadow-xl shadow-slate-300 bg-slate-100 p-4">
@@ -82,7 +87,6 @@ const SignUp = () => {
           <div className="form-control w-full max-w-xs">
             <label className="label">
               <span className="label-text">Phone</span>
-              <span className="label-text-alt">Top Right label</span>
             </label>
             <input
               type="text"
@@ -106,11 +110,8 @@ const SignUp = () => {
               required
               disabled={isLoading}
             />
-            <label className="label">
-              <span className="label-text-alt">Bottom Left label</span>
-            </label>
           </div>
-          <div className="h-auto w-full flex flex-col justify-center items-center">
+          <div className="h-auto w-full flex flex-col justify-center items-center p-4">
             {isError ? (
               <div className="text-sm text-red-800">
                 {signUpError?.data?.message || "SomeThine "}
@@ -119,7 +120,7 @@ const SignUp = () => {
               ""
             )}
             <button
-              className="btn btn-success w-full"
+              className="btn btn-success w-full mt-2"
               disabled={isLoading}
               type="submit"
             >
