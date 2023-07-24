@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import {
+  useGetReviewQuery,
   useGetSingleBookQuery,
   usePostReviewMutation,
 } from "../../redux/book/bookApi";
@@ -10,8 +11,10 @@ import { error } from "../../types/error";
 
 const SingleBook = () => {
   const param = useParams();
+
   const { data, isLoading } = useGetSingleBookQuery(param?.id as string);
   const [postReview, { isSuccess, error, isError }] = usePostReviewMutation();
+  const bookReviews = useGetReviewQuery(data?.data?._id);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
@@ -33,7 +36,7 @@ const SingleBook = () => {
       const meaasge = Error?.data?.message;
       toast.error(meaasge);
     }
-  }, [isSuccess, isError, error]);
+  }, [isSuccess, isError, error, bookReviews]);
 
   if (isLoading) {
     return (
@@ -86,14 +89,24 @@ const SingleBook = () => {
         <h2 className="text-xl font-bold mb-4">Reviews</h2>
         <div className="bg-gray-200 p-4 rounded-lg">
           {/* Dummy Review Comments */}
-          <div className="mb-4">
-            <h3 className="text-lg font-bold">John Doe</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          </div>
-          <div>
-            <h3 className="text-lg font-bold">Jane Smith</h3>
-            <p>Nulla quis lorem ut libero malesuada feugiat.</p>
-          </div>
+
+          {bookReviews.isLoading ? (
+            <Loading></Loading>
+          ) : bookReviews?.data?.data.length ? (
+            bookReviews?.data?.data?.map(
+              (review: {
+                user: { _id: string; name: string };
+                review: string;
+              }) => (
+                <div className="mb-4">
+                  <h3 className="text-lg font-bold">{review?.user?.name}</h3>
+                  <p>{review?.review}</p>
+                </div>
+              )
+            )
+          ) : (
+            "No Review yet"
+          )}
         </div>
 
         {/* Post Comment Box */}
