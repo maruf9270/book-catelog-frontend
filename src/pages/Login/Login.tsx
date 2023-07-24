@@ -4,8 +4,11 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import { error } from "../../types/error";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { setUser } from "../../redux/user/userSlice";
 import { loginData } from "../../types/login";
 const Login = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [login, { isLoading, isSuccess, data, error, isError }] =
     useLoginMutation();
@@ -23,17 +26,24 @@ const Login = () => {
 
   const loginError = error as FetchBaseQueryError as error;
   const loginData = data as loginData;
+  const user = useAppSelector((state) => state);
+
   useEffect(() => {
     if (isSuccess) {
       toast.success("Logged in successfully");
       localStorage.setItem("loggedIn", true as unknown as string);
       localStorage.setItem("user", loginData?.data?.accessToken);
+      dispatch(setUser(loginData?.data));
+
       navigate("/");
     }
     if (isError) {
       toast.error(loginError?.data?.message);
       localStorage.removeItem("user");
       localStorage.removeItem("loggedIn");
+    }
+    if (user?.user?.user?._id) {
+      navigate("/");
     }
   }, [
     isLoading,
@@ -44,6 +54,9 @@ const Login = () => {
     navigate,
     loginError?.data?.message,
     loginData?.data?.accessToken,
+    loginData,
+    dispatch,
+    user?.user?.user?._id,
   ]);
 
   return (

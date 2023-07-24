@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { logOut } from "../redux/user/userSlice";
 
 const Navber = () => {
+  const diapatch = useAppDispatch();
+  const user = useAppSelector((state) => state?.user);
+  console.log(user);
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
@@ -56,18 +61,39 @@ const Navber = () => {
           <li>
             <Link to={"/all-books"}>All Books</Link>
           </li>
-          <li>
-            <Link to={"/add-book"}>Add Book</Link>
-          </li>
+          {user.loggedIn ? (
+            <li>
+              <Link to={"/add-book"}>Add Book</Link>
+            </li>
+          ) : (
+            ""
+          )}
         </ul>
       </div>
       <div className="navbar-end">
-        <Link className="btn" to={"/login"}>
-          Login
-        </Link>
-        <Link className="btn" to={"/sign-up"}>
-          Sign Up
-        </Link>
+        {!user.loggedIn ? (
+          <>
+            <Link className="btn" to={"/login"}>
+              Login
+            </Link>
+            <Link className="btn" to={"/sign-up"}>
+              Sign Up
+            </Link>
+          </>
+        ) : (
+          ""
+        )}
+
+        {user.loggedIn ? (
+          <>
+            <button className="btn " onClick={() => diapatch(logOut())}>
+              Log Out
+            </button>
+            <span>{user?.user?.name}</span>
+          </>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

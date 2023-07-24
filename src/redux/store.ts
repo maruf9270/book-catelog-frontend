@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { api } from "./api/apiSlice";
 import userReducer from "./user/userSlice";
+import loadingSlice from "./loading/loadingSlice";
 
 const store = configureStore({
   reducer: {
+    loading: loadingSlice,
     user: userReducer,
     [api.reducerPath]: api.reducer,
   },

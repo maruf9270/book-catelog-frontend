@@ -14,9 +14,18 @@ const userApi = api.injectEndpoints({
         url: "/auth/login",
         body: loginData,
         method: "POST",
+        credentials: "include",
+      }),
+    }),
+    accessToken: builder.mutation({
+      query: () => ({
+        url: "/auth/refresh-token",
+        method: "POST",
+        credentials: "include",
       }),
     }),
   }),
 });
 
-export const { useSignUpMutation, useLoginMutation } = userApi;
+export const { useSignUpMutation, useLoginMutation, useAccessTokenMutation } =
+  userApi;
