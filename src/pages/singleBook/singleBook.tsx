@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import {
+  useAddToWishlistMutation,
   useGetReviewQuery,
   useGetSingleBookQuery,
   usePostReviewMutation,
@@ -27,6 +28,8 @@ const SingleBook = () => {
     postReview(reviewObject);
     form.reset();
   };
+
+  const [addToWishliat, actionData] = useAddToWishlistMutation();
   useEffect(() => {
     if (isSuccess) {
       toast.success("Review posted successfully");
@@ -36,7 +39,23 @@ const SingleBook = () => {
       const meaasge = Error?.data?.message;
       toast.error(meaasge);
     }
-  }, [isSuccess, isError, error, bookReviews]);
+    if (actionData.isSuccess) {
+      toast.success("Book added to your Wishlist");
+    }
+    if (actionData.isError) {
+      const Error = actionData.error as error;
+
+      toast.error(Error.data.message);
+    }
+  }, [
+    isSuccess,
+    isError,
+    error,
+    bookReviews,
+    actionData?.isSuccess,
+    actionData.isError,
+    actionData.error,
+  ]);
 
   if (isLoading) {
     return (
@@ -74,7 +93,10 @@ const SingleBook = () => {
 
           {/* Buttons */}
           <div className="flex space-x-4">
-            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+            <button
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+              onClick={() => addToWishliat(data?.data?._id)}
+            >
               Add to Wishlist
             </button>
             <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">

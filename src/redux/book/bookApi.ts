@@ -4,7 +4,7 @@ import { book } from "../../types/bookInterfact";
 const productApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: () => "/book/",
+      query: (options: string) => `/book/${options}`,
       providesTags: ["books"],
     }),
     uploadBook: builder.mutation({
@@ -30,6 +30,12 @@ const productApi = api.injectEndpoints({
       }),
       invalidatesTags: ["review"],
     }),
+    addToWishlist: builder.mutation({
+      query: (id: string) => ({
+        url: `/wishlist/${id}`,
+        method: "POST",
+      }),
+    }),
   }),
 });
 
@@ -39,4 +45,6 @@ export const {
   useGetSingleBookQuery,
   usePostReviewMutation,
   useGetReviewQuery,
+  useAddToWishlistMutation,
+  useLazyGetProductsQuery,
 } = productApi;

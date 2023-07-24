@@ -4,7 +4,7 @@ import { useGetProductsQuery } from "../../redux/book/bookApi";
 import { book } from "../../types/bookInterfact";
 
 const HomePage = () => {
-  const { data, isLoading } = useGetProductsQuery(undefined);
+  const { data, isLoading } = useGetProductsQuery("/");
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-[80vh]">

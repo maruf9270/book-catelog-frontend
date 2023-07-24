@@ -3,7 +3,7 @@ export interface book {
   title: string;
   author: string;
   genre: string;
-  publiCationDate: string;
+  publicationDate: string;
   image: {
     image: string;
     thumbnail: string;
