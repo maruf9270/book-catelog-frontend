@@ -17,6 +17,7 @@ const productApi = api.injectEndpoints({
     }),
     getSingleBook: builder.query({
       query: (book: string) => `/book/${book}`,
+      providesTags: ["singleBook"],
     }),
     getReview: builder.query({
       query: (id: string) => `/review/${id}`,
@@ -36,6 +37,19 @@ const productApi = api.injectEndpoints({
         method: "POST",
       }),
     }),
+    editBook: builder.mutation({
+      query: (book: book) => ({
+        url: `/book/${book._id}`,
+        method: "PATCH",
+        body: JSON.stringify({
+          title: book.title,
+          author: book.author,
+          publicationDate: book.publicationDate,
+          ganre: book.genre,
+        }),
+      }),
+      invalidatesTags: ["singleBook", "books"],
+    }),
   }),
 });
 
@@ -47,4 +61,5 @@ export const {
   useGetReviewQuery,
   useAddToWishlistMutation,
   useLazyGetProductsQuery,
+  useEditBookMutation,
 } = productApi;

@@ -5,17 +5,14 @@ interface IProps {
   book: book;
 }
 const Card = ({ book }: IProps) => {
-  const { title, _id } = book;
+  const { title, _id, image } = book;
 
   return (
     <div>
       <Link to={`/book/${_id}`}>
         <div className="card w-96 bg-base-100 shadow-xl">
           <figure>
-            <img
-              src="/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
-              alt="Shoes"
-            />
+            <img src={image?.thumbnail} alt={title} />
           </figure>
           <div className="card-body">
             <h2 className="card-title">

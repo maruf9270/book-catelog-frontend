@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   useAddToWishlistMutation,
   useGetReviewQuery,
@@ -92,16 +92,28 @@ const SingleBook = () => {
           </p>
 
           {/* Buttons */}
-          <div className="flex space-x-4">
-            <button
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-              onClick={() => addToWishliat(data?.data?._id)}
-            >
-              Add to Wishlist
-            </button>
-            <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-              Add to Reading List
-            </button>
+          <div className="flex flex-col">
+            <div className="">
+              <button
+                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mx-2"
+                onClick={() => addToWishliat(data?.data?._id)}
+              >
+                Add to Wishlist
+              </button>
+              <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                Add to Reading List
+              </button>
+            </div>
+            <div className="my-2">
+              <Link to={`/edit/${data?.data?._id}`}>
+                <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mx-2">
+                  Edit
+                </button>
+              </Link>
+              <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       </div>
