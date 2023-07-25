@@ -50,6 +50,13 @@ const productApi = api.injectEndpoints({
       }),
       invalidatesTags: ["singleBook", "books"],
     }),
+    deletBook: builder.mutation({
+      query: (id: string) => ({
+        url: `/book/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["books"],
+    }),
   }),
 });
 
@@ -62,4 +69,5 @@ export const {
   useAddToWishlistMutation,
   useLazyGetProductsQuery,
   useEditBookMutation,
+  useDeletBookMutation,
 } = productApi;

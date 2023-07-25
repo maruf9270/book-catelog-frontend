@@ -7,6 +7,7 @@ export const api = createApi({
     prepareHeaders: (headers: Headers) => {
       // Add your custom headers here
       headers.set("authorization", localStorage.getItem("user") as string);
+      headers.set("content-type", "application/json");
       return headers;
     },
   }),
