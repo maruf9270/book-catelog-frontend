@@ -15,10 +15,9 @@ function App() {
 
   useEffect(() => {
     dispatch(setLoading({ loading: true }));
-    if (!data) {
+    if (!data && !isError) {
       getAccessToken(undefined);
     }
-    console.log(data?.data);
     if (data) {
       localStorage.setItem("loggedIn", true as unknown as string);
       localStorage.setItem("user", data?.data.accessToken);
@@ -28,7 +27,7 @@ function App() {
     if (isError) {
       dispatch(setLoading({ loading: false }));
     }
-  }, [data]);
+  }, [data, dispatch, getAccessToken, isError]);
 
   return (
     <>

@@ -8,6 +8,7 @@ import AddBooks from "../pages/AddBooks/AddBooks";
 import SingleBook from "../pages/singleBook/singleBook";
 import EditBook from "../pages/edit/EditBook";
 import Wishlist from "../pages/Wishlist/Wishlist";
+import PrivateRoute from "./PrivetRoute";
 
 const routes = createBrowserRouter([
   {
@@ -32,7 +33,11 @@ const routes = createBrowserRouter([
       },
       {
         path: "/add-book",
-        element: <AddBooks></AddBooks>,
+        element: (
+          <PrivateRoute>
+            <AddBooks></AddBooks>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/book/:id",
@@ -40,11 +45,19 @@ const routes = createBrowserRouter([
       },
       {
         path: "/edit/:id",
-        element: <EditBook></EditBook>,
+        element: (
+          <PrivateRoute>
+            <EditBook></EditBook>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/wishlist",
-        element: <Wishlist></Wishlist>,
+        element: (
+          <PrivateRoute>
+            <Wishlist></Wishlist>
+          </PrivateRoute>
+        ),
       },
     ],
   },
