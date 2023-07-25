@@ -10,8 +10,10 @@ import { useEffect } from "react";
 import Loading from "../../components/loading";
 import { toast } from "react-toastify";
 import { error } from "../../types/error";
+import { windowModel } from "../../types/window";
 
 const SingleBook = () => {
+  const Window = window as unknown as windowModel;
   const param = useParams();
 
   const { data, isLoading } = useGetSingleBookQuery(param?.id as string);
@@ -149,7 +151,7 @@ const SingleBook = () => {
                 </Link>
                 <button
                   className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                  onClick={() => window?.my_modal_5.showModal()}
+                  onClick={() => Window?.my_modal_5.showModal()}
                 >
                   Delete
                 </button>

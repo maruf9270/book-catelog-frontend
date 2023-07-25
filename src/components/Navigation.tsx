@@ -62,9 +62,14 @@ const Navber = () => {
             <Link to={"/all-books"}>All Books</Link>
           </li>
           {user.loggedIn ? (
-            <li>
-              <Link to={"/add-book"}>Add Book</Link>
-            </li>
+            <>
+              <li>
+                <Link to={"/add-book"}>Add Book</Link>
+              </li>
+              <li>
+                <Link to={"/wishlist"}>Wishlist</Link>
+              </li>
+            </>
           ) : (
             ""
           )}
