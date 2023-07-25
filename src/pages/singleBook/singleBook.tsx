@@ -12,6 +12,8 @@ import { toast } from "react-toastify";
 import { error } from "../../types/error";
 import { windowModel } from "../../types/window";
 
+import { useAddtoWishlistMutation } from "../../redux/features/readingList/readingListApi";
+
 const SingleBook = () => {
   const Window = window as unknown as windowModel;
   const param = useParams();
@@ -35,6 +37,16 @@ const SingleBook = () => {
     postReview(reviewObject);
     form.reset();
   };
+
+  // FOr reading list
+  const [
+    addToReadingList,
+    {
+      isSuccess: readingListSuccess,
+      isError: readingListError,
+      error: readingListMessage,
+    },
+  ] = useAddtoWishlistMutation();
   const navigate = useNavigate();
   const [addToWishliat, actionData] = useAddToWishlistMutation();
   useEffect(() => {
@@ -62,6 +74,14 @@ const SingleBook = () => {
       const Error = deleteMessage as error;
       toast.error(Error.data.message);
     }
+
+    if (readingListSuccess) {
+      toast.success("Book Added to reading list");
+    }
+    if (readingListError) {
+      const Error = readingListMessage as error;
+      toast.error(Error?.data?.message);
+    }
   }, [
     isSuccess,
     isError,
@@ -74,8 +94,12 @@ const SingleBook = () => {
     deleteSuccess,
     deleteMessage,
     navigate,
+    readingListError,
+    readingListSuccess,
+    readingListMessage,
   ]);
 
+  console.log(data?.data?._id);
   if (isLoading) {
     return (
       <>
@@ -105,6 +129,7 @@ const SingleBook = () => {
           </div>
         </form>
       </dialog>
+
       <div className="flex flex-col mt-8">
         <div className="md:flex">
           <div className="md:w-1/2 p-4">
@@ -139,7 +164,15 @@ const SingleBook = () => {
                 >
                   Add to Wishlist
                 </button>
-                <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                <button
+                  className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                  onClick={() =>
+                    addToReadingList({
+                      book: data?.data?._id as string,
+                      status: "read-soon",
+                    })
+                  }
+                >
                   Add to Reading List
                 </button>
               </div>
@@ -153,99 +186,6 @@ const SingleBook = () => {
                   className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                   onClick={() => Window?.my_modal_5.showModal()}
                 >
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Review Section */}
-        <div className="mt-8">
-          <h2 className="text-xl font-bold mb-4">Reviews</h2>
-          <div className="bg-gray-200 p-4 rounded-lg">
-            {/* Dummy Review Comments */}
-
-            {bookReviews.isLoading ? (
-              <Loading></Loading>
-            ) : bookReviews?.data?.data.length ? (
-              bookReviews?.data?.data?.map(
-                (review: {
-                  user: { _id: string; name: string };
-                  review: string;
-                }) => (
-                  <div className="mb-4">
-                    <h3 className="text-lg font-bold">{review?.user?.name}</h3>
-                    <p>{review?.review}</p>
-                  </div>
-                )
-              )
-            ) : (
-              "No Review yet"
-            )}
-          </div>
-
-          {/* Post Comment Box */}
-          <form className="mt-4" onSubmit={(e) => handleSubmit(e)}>
-            <textarea
-              name="review"
-              className="w-full p-2 rounded"
-              placeholder="Write your review here..."
-            />
-            <button
-              type="submit"
-              className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded mt-2"
-            >
-              Post Comment
-            </button>
-          </form>
-        </div>
-      </div>
-      <div className="flex flex-col mt-8">
-        <div className="md:flex">
-          <div className="md:w-1/2 p-4">
-            {/* Book Image */}
-            <img
-              src={data?.data?.image?.image}
-              alt="Book Cover"
-              className="w-full rounded-lg shadow-lg"
-            />
-          </div>
-          <div className="md:w-1/2 p-4 items-start flex flex-col">
-            {/* Book Information */}
-            <h1 className="text-2xl font-bold mb-2">
-              <b>Title:</b> {data?.data?.title}
-            </h1>
-            <p className="text-lg mb-2">
-              <b>Autor:</b> {data?.data?.author}
-            </p>
-            <p className="text-lg mb-2">
-              <b>Genre:</b> {data?.data?.genre}
-            </p>
-            <p className="text-lg mb-4">
-              <b> Publication Date:</b> {data?.data?.publicationDate}
-            </p>
-
-            {/* Buttons */}
-            <div className="flex flex-col">
-              <div className="">
-                <button
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mx-2"
-                  onClick={() => addToWishliat(data?.data?._id)}
-                >
-                  Add to Wishlist
-                </button>
-                <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-                  Add to Reading List
-                </button>
-              </div>
-              <div className="my-2">
-                <Link to={`/edit/${data?.data?._id}`}>
-                  <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mx-2">
-                    Edit
-                  </button>
-                </Link>
-                <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                   Delete
                 </button>
               </div>

@@ -69,6 +69,9 @@ const Navber = () => {
               <li>
                 <Link to={"/wishlist"}>Wishlist</Link>
               </li>
+              <li>
+                <Link to={"/reading-list"}>Reading-List</Link>
+              </li>
             </>
           ) : (
             ""
