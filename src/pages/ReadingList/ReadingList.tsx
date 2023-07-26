@@ -1,9 +1,33 @@
 import Loading from "../../components/loading";
-import { useGetReadingListQuery } from "../../redux/features/readingList/readingListApi";
-import { book } from "../../types/bookInterfact";
+import {
+  useGetReadingListQuery,
+  useUpdateReadingListMutation,
+} from "../../redux/features/readingList/readingListApi";
+import { RBook } from "../../types/readingBook";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const ReadingList = () => {
+  const [updateReadingStatus, { isSuccess, isError, error }] =
+    useUpdateReadingListMutation();
   const { data, isLoading } = useGetReadingListQuery(undefined);
+  const handleStatusChange = (e: string, selected: string, bookId: string) => {
+    const rData = {
+      book: bookId,
+      status: e,
+    };
+    if (e !== selected) {
+      updateReadingStatus(rData);
+    }
+  };
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Book status changed successfully");
+    }
+    if (isError) {
+      toast.error("Something went wrong.Try again letter");
+    }
+  }, [isSuccess, isError, error]);
   if (isLoading) {
     return (
       <>
@@ -24,12 +48,11 @@ const ReadingList = () => {
               <th>Genre</th>
               <th>Publication Date</th>
               <th>Status</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
             {/* row 1 */}
-            {data?.data[0]?.books.map((book) => (
+            {data?.data[0]?.books.map((book: RBook) => (
               <tr>
                 <td>
                   <div className="flex items-center space-x-3">
@@ -52,12 +75,38 @@ const ReadingList = () => {
                 </td>
                 <td>{book?.book?.genre}</td>
                 <td>{book?.book?.publicationDate}</td>
-                <td>{book?.status}</td>
-                <th>
-                  <button className="btn bg-red-600 hover:bg-red-700 text-white btn-ghost btn-xs">
-                    Remove
-                  </button>
-                </th>
+                <td>
+                  <select
+                    name="rValue"
+                    id=""
+                    onChange={(e) =>
+                      handleStatusChange(
+                        e.target.value,
+                        book?.status,
+                        book?.book?._id as string
+                      )
+                    }
+                  >
+                    <option
+                      selected={book?.status === "read-soon"}
+                      value="read-soon"
+                    >
+                      Read-soon
+                    </option>
+                    <option
+                      selected={book?.status === "reading"}
+                      value="reading"
+                    >
+                      Reading
+                    </option>
+                    <option
+                      selected={book?.status === "finished"}
+                      value="finished"
+                    >
+                      Finished
+                    </option>
+                  </select>
+                </td>
               </tr>
             ))}
           </tbody>

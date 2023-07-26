@@ -14,7 +14,19 @@ const readingList = api.injectEndpoints({
       }),
       invalidatesTags: ["readingList"],
     }),
+    updateReadingList: builder.mutation({
+      query: (param: { book: string; status: string }) => ({
+        url: "/reading-list",
+        method: "PATCH",
+        body: JSON.stringify(param),
+      }),
+      invalidatesTags: ["readingList"],
+    }),
   }),
 });
 
-export const { useAddtoWishlistMutation, useGetReadingListQuery } = readingList;
+export const {
+  useAddtoWishlistMutation,
+  useGetReadingListQuery,
+  useUpdateReadingListMutation,
+} = readingList;

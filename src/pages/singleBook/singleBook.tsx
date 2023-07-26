@@ -13,8 +13,11 @@ import { error } from "../../types/error";
 import { windowModel } from "../../types/window";
 
 import { useAddtoWishlistMutation } from "../../redux/features/readingList/readingListApi";
+import { useAppSelector } from "../../hooks/hooks";
 
 const SingleBook = () => {
+  const { user } = useAppSelector((state) => state);
+
   const Window = window as unknown as windowModel;
   const param = useParams();
 
@@ -49,6 +52,7 @@ const SingleBook = () => {
   ] = useAddtoWishlistMutation();
   const navigate = useNavigate();
   const [addToWishliat, actionData] = useAddToWishlistMutation();
+  console.log(data?.data?.user?._id);
   useEffect(() => {
     if (isSuccess) {
       toast.success("Review posted successfully");
@@ -176,19 +180,25 @@ const SingleBook = () => {
                   Add to Reading List
                 </button>
               </div>
-              <div className="my-2">
-                <Link to={`/edit/${data?.data?._id}`}>
-                  <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mx-2">
-                    Edit
-                  </button>
-                </Link>
-                <button
-                  className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                  onClick={() => Window?.my_modal_5.showModal()}
-                >
-                  Delete
-                </button>
-              </div>
+              {user.user._id.toString() == data?.data?.user?._id.toString() ? (
+                <>
+                  <div className="my-2">
+                    <Link to={`/edit/${data?.data?._id}`}>
+                      <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mx-2">
+                        Edit
+                      </button>
+                    </Link>
+                    <button
+                      className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                      onClick={() => Window?.my_modal_5.showModal()}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>
@@ -219,19 +229,28 @@ const SingleBook = () => {
           </div>
 
           {/* Post Comment Box */}
-          <form className="mt-4" onSubmit={(e) => handleSubmit(e)}>
-            <textarea
-              name="review"
-              className="w-full p-2 rounded"
-              placeholder="Write your review here..."
-            />
-            <button
-              type="submit"
-              className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded mt-2"
-            >
-              Post Comment
-            </button>
-          </form>
+          {user.user._id ? (
+            <form className="mt-4" onSubmit={(e) => handleSubmit(e)}>
+              <textarea
+                name="review"
+                className="w-full p-2 rounded"
+                placeholder="Write your review here..."
+              />
+              <button
+                type="submit"
+                className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded mt-2"
+              >
+                Post Comment
+              </button>
+            </form>
+          ) : (
+            <>
+              <Link to={"/login"} className="text-blue-600">
+                Login
+              </Link>{" "}
+              to Write review
+            </>
+          )}
         </div>
       </div>
     </>
