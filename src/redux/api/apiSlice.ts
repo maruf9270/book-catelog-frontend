@@ -6,7 +6,7 @@ export const api = createApi({
     baseUrl: "https://book-cotalog-backend.vercel.app/api/v1",
     prepareHeaders: (headers: Headers) => {
       // Add your custom headers here
-      headers.set("authorization", localStorage.getItem("user") as string);
+      headers.set("Authorization", localStorage.getItem("user") as string);
       headers.set("content-type", "application/json");
       return headers;
     },

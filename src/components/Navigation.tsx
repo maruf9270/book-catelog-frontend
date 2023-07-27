@@ -1,11 +1,27 @@
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { logOut } from "../redux/user/userSlice";
+import { useLogOutMutation } from "../redux/user/userApi";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const Navber = () => {
   const diapatch = useAppDispatch();
   const user = useAppSelector((state) => state?.user);
-  console.log(user);
+  const [logouta, { isError, isLoading, isSuccess }] = useLogOutMutation();
+  const handleLogout = () => {
+    logouta(undefined);
+    diapatch(logOut());
+  };
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Logged out successfully");
+    }
+    if (isError) {
+      toast.error("Something is Wrong. Try again letter");
+    }
+  }, [isLoading, isError, isSuccess]);
+
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
@@ -34,19 +50,26 @@ const Navber = () => {
               <Link to={"/"}>Home</Link>
             </li>
             <li>
-              <a>Parent</a>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
+              <Link to={"/"}>Home</Link>
             </li>
             <li>
-              <a>Home</a>
+              <Link to={"/all-books"}>All Books</Link>
             </li>
+            {user.loggedIn ? (
+              <>
+                <li>
+                  <Link to={"/add-book"}>Add Book</Link>
+                </li>
+                <li>
+                  <Link to={"/wishlist"}>Wishlist</Link>
+                </li>
+                <li>
+                  <Link to={"/reading-list"}>Reading-List</Link>
+                </li>
+              </>
+            ) : (
+              ""
+            )}
           </ul>
         </div>
         <Link to={"/"} className="btn btn-ghost normal-case text-xl">
@@ -81,7 +104,7 @@ const Navber = () => {
       <div className="navbar-end">
         {!user.loggedIn ? (
           <>
-            <Link className="btn" to={"/login"}>
+            <Link className="btn mx-1" to={"/login"}>
               Login
             </Link>
             <Link className="btn" to={"/sign-up"}>
@@ -94,7 +117,7 @@ const Navber = () => {
 
         {user.loggedIn ? (
           <>
-            <button className="btn " onClick={() => diapatch(logOut())}>
+            <button className="btn " onClick={() => handleLogout()}>
               Log Out
             </button>
           </>

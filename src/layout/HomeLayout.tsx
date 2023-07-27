@@ -1,3 +1,4 @@
+import { ToastContainer } from "react-toastify";
 import Navber from "../components/Navigation";
 import { Outlet } from "react-router-dom";
 
@@ -6,6 +7,7 @@ const HomeLayout = () => {
     <div>
       <Navber></Navber>
       <Outlet></Outlet>
+      <ToastContainer />
     </div>
   );
 };

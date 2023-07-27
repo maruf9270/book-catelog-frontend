@@ -118,7 +118,7 @@ const Login = () => {
               {isLoading ? (
                 <span className="loading loading-bars loading-md"></span>
               ) : (
-                "Sign Up"
+                "Login"
               )}
             </button>
           </div>

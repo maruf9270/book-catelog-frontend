@@ -3,7 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
 import "./App.css";
 import routes from "./routes";
-import { ToastContainer } from "react-toastify";
+
 import { useAccessTokenMutation } from "./redux/user/userApi";
 import { useAppDispatch } from "./hooks/hooks";
 import { setUser } from "./redux/user/userSlice";
@@ -31,7 +31,6 @@ function App() {
 
   return (
     <>
-      <ToastContainer />
       <RouterProvider router={routes}></RouterProvider>
     </>
   );

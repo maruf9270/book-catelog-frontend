@@ -7,7 +7,8 @@ import { toast } from "react-toastify";
 interface SignUpError {
   data: {
     message: string;
-    statusCode: string;
+    statusCode: number;
+    errorMessages: [{ path: string; message: string }];
   };
 }
 const SignUp = () => {
@@ -33,13 +34,15 @@ const SignUp = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error(signUpError?.data?.message);
+      if (signUpError.data.statusCode == 409) {
+        toast.error("Email or phone number Already exists");
+      }
     }
     if (isSuccess) {
       toast.success("Signed Up successfully. Please Log in");
       navigate("/login");
     }
-  }, [isError, isLoading, isSuccess, navigate, signUpError?.data?.message]);
+  }, [isError, isLoading, isSuccess, navigate]);
 
   return (
     <div className="flex items-center justify-center min-h-[80vh] rounded-md">
@@ -114,7 +117,9 @@ const SignUp = () => {
           <div className="h-auto w-full flex flex-col justify-center items-center p-4">
             {isError ? (
               <div className="text-sm text-red-800">
-                {signUpError?.data?.message || "SomeThine "}
+                {signUpError.data.statusCode == 409
+                  ? "Email and phone number already exists"
+                  : signUpError?.data?.message}
               </div>
             ) : (
               ""

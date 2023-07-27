@@ -43,7 +43,6 @@ const userSlice = createSlice({
       state.accessToken = "";
       localStorage.removeItem("loggedIn");
       localStorage.removeItem("user");
-      document.cookie = "user" + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
     },
   },
 });
