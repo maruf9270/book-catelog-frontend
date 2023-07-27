@@ -97,7 +97,6 @@ const Navber = () => {
             <button className="btn " onClick={() => diapatch(logOut())}>
               Log Out
             </button>
-            <span>{user?.user?.name}</span>
           </>
         ) : (
           ""

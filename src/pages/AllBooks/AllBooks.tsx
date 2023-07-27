@@ -38,7 +38,7 @@ const AllBooks = () => {
           className="w-full lg:w-64 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring focus:ring-blue-300 h-10 mt-6"
         />
 
-        <div className="flex flex-col items-center lg:flex-row mt-4 lg:mt-0 lg:ml-4 space-y-2 lg:space-y-0 lg:space-x-4">
+        <div className="flex flex-col items-end   justify-end lg:flex-row mt-4 lg:mt-0 lg:ml-4 space-y-2 lg:space-y-0 lg:space-x-4">
           <div className="w-full lg:w-32">
             <label className="block font-medium">Publication Date:</label>
             <select
