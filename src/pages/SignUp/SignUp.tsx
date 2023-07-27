@@ -42,7 +42,7 @@ const SignUp = () => {
       toast.success("Signed Up successfully. Please Log in");
       navigate("/login");
     }
-  }, [isError, isLoading, isSuccess, navigate]);
+  }, [isError, isLoading, isSuccess]);
 
   return (
     <div className="flex items-center justify-center min-h-[80vh] rounded-md">
