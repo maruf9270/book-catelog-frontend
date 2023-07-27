@@ -23,8 +23,8 @@ const Navber = () => {
   }, [isLoading, isError, isSuccess]);
 
   return (
-    <div className="navbar bg-base-100">
-      <div className="navbar-start">
+    <div className="navbar bg-base-200 text-base-content rounded">
+      <div className="navbar-start rounded-md">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
             <svg
