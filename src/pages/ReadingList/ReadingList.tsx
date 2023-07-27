@@ -35,7 +35,7 @@ const ReadingList = () => {
       </>
     );
   }
-  console.log(data);
+
   return (
     <div>
       <div className="overflow-x-auto">

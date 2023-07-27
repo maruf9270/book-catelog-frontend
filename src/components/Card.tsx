@@ -7,7 +7,7 @@ interface IProps {
 const Card = ({ book }: IProps) => {
   const { title, _id, image } = book;
   const location = useLocation();
-  console.log(location);
+
   return (
     <div>
       <Link to={`/book/${_id}`}>
