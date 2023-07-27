@@ -52,7 +52,7 @@ const SingleBook = () => {
   ] = useAddtoWishlistMutation();
   const navigate = useNavigate();
   const [addToWishliat, actionData] = useAddToWishlistMutation();
-  console.log(data?.data?.user?._id);
+
   useEffect(() => {
     if (isSuccess) {
       toast.success("Review posted successfully");
@@ -103,7 +103,6 @@ const SingleBook = () => {
     readingListMessage,
   ]);
 
-  console.log(data?.data?._id);
   if (isLoading) {
     return (
       <>
